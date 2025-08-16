@@ -13,8 +13,8 @@ export default function Home() {
       
       <main className="flex-1 px-4 sm:px-6 lg:px-8 py-1">
         <div className="max-w-7xl mx-auto">
-          <p className="text-gray-900 py-1">I'm a BYU student and currently building at <a href="http://lurnloop.com" className="text-blue-500">LurnLoop</a>.</p>
-          <p className="text-gray-900 py-1">I've lived all over the US and the world. Here's cities I've lived in for at least 6 months: Columbus, Palo Alto, Chandler, St. George, Rochester, Bennington, Gilbert, Kaysville, Morong, Infanta, and Provo.</p>
+          <p className="text-gray-900 py-1">I&apos;m a BYU student and currently building at <a href="http://lurnloop.com" className="text-blue-500">LurnLoop</a>.</p>
+          <p className="text-gray-900 py-1">I&apos;ve lived all over the US and the world. Here&apos;s cities I&apos;ve lived in for at least 6 months: Columbus, Palo Alto, Chandler, St. George, Rochester, Bennington, Gilbert, Kaysville, Morong, Infanta, and Provo.</p>
           <h2 className="text-gray-900 py-4">
             Projects:
           </h2>
