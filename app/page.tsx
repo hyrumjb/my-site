@@ -95,8 +95,7 @@ function AboutContent() {
   return (
     <div>
       <p className="text-gray-900 text-base leading-relaxed mb-6">
-        I&apos;m a BYU student and currently building a project a week (check it
-        out on X).
+        I&apos;m a BYU student building startups online.
       </p>
       <p className="text-gray-900 text-base leading-relaxed mb-8">
         I&apos;ve lived all over the US and the world. Here&apos;s cities
