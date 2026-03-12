@@ -135,7 +135,7 @@ const projects = [
     title: "Personal Site",
     domain: "hyrumbradshaw.com",
     url: "https://hyrumbradshaw.com",
-    description: "Coming soon: itsjay.us-style design",
+    description: "Coming soon: itsjay.us style design (also zenorocha.com, itsthewestend.com, jazzicreates.tv, kick-bass.com)",
   },
   {
     status: "Active",

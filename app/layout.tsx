@@ -37,7 +37,7 @@ export default function RootLayout({
             <div className="max-w-2xl mx-auto">
               <div className="border-t border-gray-200 pt-8 flex items-center justify-between">
                 <p className="text-gray-500 text-sm">
-                  &copy; 2025 Hyrum Bradshaw
+                  &copy; {new Date().getFullYear()} Hyrum Bradshaw
                 </p>
                 <div className="flex gap-5">
                   <a
