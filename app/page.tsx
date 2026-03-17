@@ -142,7 +142,7 @@ const projects = [
     title: "Lightfall",
     domain: "lightfall.ai",
     url: "https://lightfall.ai",
-    description: "Coming soon: TikTok integration, RAG for successful videos",
+    description: "Coming soon: TikTok integration, RAG for successful videos, better design (usecardboard.com, mercor.com)",
   },
   {
     status: "Semi-Active",
@@ -177,7 +177,7 @@ const projects = [
     title: "Backbend",
     domain: "backbend.ai",
     url: "https://backbend.ai",
-    description: "Coming soon: browser use AI agent (OpenClaw, Zendriver, Multi-On)",
+    description: "Coming soon: browser use AI agent (OpenClaw, Zendriver, Multi-On) ... or maybe something like Mercor/SurgeAI",
   },
   {
     status: "In the Shop",
