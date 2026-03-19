@@ -198,7 +198,7 @@ function ProjectsContent() {
             className="block border border-transparent hover:border-orange-300 hover:rounded-lg transition-all duration-150"
           >
             <div className="flex items-start gap-6 py-6">
-              <span className="w-28 text-sm text-gray-500 tracking-wide pl-3">
+              <span className="w-28 shrink-0 text-sm text-gray-500 tracking-wide pl-3">
                 {project.status}
               </span>
               <div className="min-w-0">
