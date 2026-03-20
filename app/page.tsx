@@ -170,7 +170,7 @@ const projects = [
     title: "Huli",
     domain: "usehuli.com",
     url: "https://usehuli.com",
-    description: "Coming soon: agent tools (something like AgentMail)",
+    description: "Coming soon: agent tools (something like AgentMail or https://www.x402.org/)",
   },
   {
     status: "In the Shop",
