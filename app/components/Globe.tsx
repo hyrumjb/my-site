@@ -1,32 +1,25 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
 import { useEffect, useRef, useMemo, useState, useCallback } from "react";
 import ThreeGlobe from "three-globe";
 import * as THREE from "three";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 
-export const locations = [
-  { lat: 39.9612, lng: -82.9988, label: "Columbus" },
-  { lat: 37.4419, lng: -122.143, label: "Palo Alto" },
-  { lat: 33.3062, lng: -111.8413, label: "Chandler" },
-  { lat: 37.0965, lng: -113.5684, label: "St. George" },
-  { lat: 37.168, lng: -113.6768, label: "Ivins" },
-  { lat: 44.0121, lng: -92.4802, label: "Rochester" },
-  { lat: 41.0147, lng: -96.1538, label: "Bennington" },
-  { lat: 33.3528, lng: -111.789, label: "Gilbert" },
-  { lat: 41.0352, lng: -111.9385, label: "Kaysville" },
-  { lat: 14.5995, lng: 120.9842, label: "Manila" },
-  { lat: 14.5129, lng: 121.2089, label: "Morong" },
-  { lat: 14.5176, lng: 121.0509, label: "Taguig" },
-  { lat: 14.5886, lng: 121.1762, label: "Antipolo" },
-  { lat: 14.5567, lng: 121.1326, label: "Taytay" },
-  { lat: 14.4527, lng: 121.1956, label: "Binangonan" },
-  { lat: 14.7468, lng: 121.6531, label: "Infanta" },
-  { lat: 40.2338, lng: -111.6585, label: "Provo" },
-  { lat: 37.7749, lng: -122.4194, label: "San Francisco" },
-];
+import { locations } from "./locations";
+
+function latLngToVector3(lat: number, lng: number, altitude: number = 0): THREE.Vector3 {
+  const r = 100 * (1 + altitude);
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (90 - lng) * (Math.PI / 180);
+  return new THREE.Vector3(
+    r * Math.sin(phi) * Math.cos(theta),
+    r * Math.cos(phi),
+    r * Math.sin(phi) * Math.sin(theta)
+  );
+}
 
 function GlobeScene({
   countries,
@@ -175,11 +168,40 @@ function GlobeScene({
     }
   });
 
+  const selectedLoc = selectedLabel
+    ? locations.find((l) => l.label === selectedLabel)
+    : null;
+  const pinPos = selectedLoc
+    ? latLngToVector3(selectedLoc.lat, selectedLoc.lng, 0.06)
+    : null;
   return (
     <>
       <ambientLight intensity={2.5} />
       <directionalLight position={[5, 3, 5]} intensity={0.5} />
-      <group ref={groupRef} />
+      <group ref={groupRef}>
+        {pinPos && selectedLoc && (
+          <>
+            <Html
+              position={[pinPos.x, pinPos.y, pinPos.z]}
+              center={false}
+              occlude={false}
+              style={{
+                pointerEvents: "none",
+                transform: "translate(-50%, -100%)",
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <div className="bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap shadow-lg">
+                  {selectedLoc.label}, {selectedLoc.region}
+                </div>
+                <svg width="2" height="20" className="mt-0.5">
+                  <line x1="1" y1="0" x2="1" y2="20" stroke="#1a1a1a" strokeWidth="1" />
+                </svg>
+              </div>
+            </Html>
+          </>
+        )}
+      </group>
     </>
   );
 }
@@ -190,6 +212,7 @@ export default function Globe({
   selectedLabel?: string | null;
 }) {
   const [countries, setCountries] = useState<object[]>([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     fetch("/countries-110m.json")
@@ -202,20 +225,39 @@ export default function Globe({
       });
   }, []);
 
-  if (countries.length === 0) {
-    return (
-      <div className="w-[80%] mx-auto aspect-square bg-stone-200 rounded-full animate-pulse" />
-    );
-  }
+  // Mark ready after first frame renders
+  useEffect(() => {
+    if (countries.length === 0) return;
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setReady(true));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [countries]);
 
   return (
-    <div className="w-[80%] mx-auto aspect-square cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 250], fov: 55 }} dpr={[1, 2]}>
-        <GlobeScene
-          countries={countries}
-          selectedLabel={selectedLabel ?? null}
-        />
-      </Canvas>
+    <div className="w-[90%] mx-auto aspect-square relative">
+      {/* Placeholder */}
+      <div
+        className={`absolute inset-0 bg-stone-200 rounded-full transition-opacity duration-500 ${
+          ready ? "opacity-0 pointer-events-none" : "opacity-100 animate-pulse"
+        }`}
+      />
+
+      {/* Globe */}
+      {countries.length > 0 && (
+        <div
+          className={`w-full h-full cursor-grab active:cursor-grabbing transition-opacity duration-500 ${
+            ready ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Canvas camera={{ position: [0, 0, 250], fov: 55 }} dpr={[1, 2]}>
+            <GlobeScene
+              countries={countries}
+              selectedLabel={selectedLabel ?? null}
+            />
+          </Canvas>
+        </div>
+      )}
     </div>
   );
 }
